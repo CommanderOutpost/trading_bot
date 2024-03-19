@@ -3,10 +3,11 @@ class AuthController < ApplicationController
 
   def register
     if request.post?
-      user = User.new
-      user.username = params[:username]
-      user.password = params[:password]
-      if user.save
+      @user = User.new(
+        params[:user]
+      )
+      @user.password = params[:password]
+      if @user.save!
         flash[:notice] = "You have successfully registered"
         redirect_to :action => "login"
       else
