@@ -14,7 +14,6 @@ class AuthController < ApplicationController
       else
         @user = User.new(username: username, password: password)
         if @user.save!
-          flash[:notice] = "You have successfully registered"
           redirect_to :action => "login"
         else
           flash[:error] = "There was a problem registering"

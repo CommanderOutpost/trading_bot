@@ -20,7 +20,7 @@
   <section class="content">
     <header><%= yield(:header) %></header>
     <% flash.each do |message| %>
-    <div class="flash container alert alert-danger"><%= message %></div>
+    <div class="flash container alert alert-danger"><%= message[1] %></div>
     <% end %>
     <%= yield(:content) %>
   </section>
