@@ -1,0 +1,28 @@
+<div class="container">
+    <br><br>
+    <h2 class="h1 display-5">Pick a Stock to Trade</h2>
+</div>
+<div class="container">
+    <form id="stock-form" method="post">
+        <div class="mb-3">
+            <label for="stock" class="form-label"><strong>Stock Ticker:</strong></label>
+            <input name="stock" type="text" class="form-control" id="stock" placeholder="AAPL" required>
+        </div>
+        <div class="mb-3">
+            <label for="strategy" class="form-label"><strong>Strategy:</strong></label>
+            <select class="form-select" id="strategy" name="strategy" aria-label="Default select example">
+                <option value="RSI"><strong>RSI (Relative Strength Index)</strong></option>
+                <option value="MAC" selected><strong>MAC (Moving Average Crossover)</strong></option>
+                <option value="BBS"><strong>BBS (Bollinger Bands Strategy)</strong></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            
+        </div>
+        <div>
+            <input type="submit" class="btn btn-primary btn-lg" value="Start Trading">
+        </div>
+    </form>
+
+    <div id="stock-graph"></div>
+</div>
