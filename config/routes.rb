@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get "home/index"
   root "home#index"
 
+  get "auth/logout"
+
   get "auth/register"
   post "auth/register"
 

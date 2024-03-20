@@ -1,33 +1,45 @@
-# The AuthController handles user authentication and registration.
 class AuthController < ApplicationController
   skip_forgery_protection
 
-  # Registers a new user.
   def register
     if request.post?
-      @user = User.new(
-        params[:user]
-      )
-      @user.password = params[:password]
-      if @user.save
-        flash[:notice] = "You have successfully registered"
+      username = params[:username]
+      password = params[:password]
+      puts username, password
+
+      if User.exists?(username: username)
+        flash[:error] = "Username already exists"
         redirect_to :action => "login"
+        return
       else
-        flash[:error] = "There was a problem registering"
+        @user = User.new(username: username, password: password)
+        if @user.save!
+          flash[:notice] = "You have successfully registered"
+          redirect_to :action => "login"
+        else
+          flash[:error] = "There was a problem registering"
+        end
       end
     end
-  rescue StandardError => e
-    flash[:error] = "An error occurred: #{e.message}"
-    redirect_to :action => "login"
   end
 
-  # Logs in a user.
   def login
     if request.post?
-      @user = User.find_by(username: params[:username])&.authenticate(params[:password])
+      username = params[:username]
+      password = params[:password]
+      @user = User.find_by(username: username)&.authenticate(password)
+      if @user
+        session[:user_id] = @user.id
+        redirect_to root_path
+      else
+        flash[:error] = "Invalid username or password"
+        redirect_to :action => "login"
+      end
     end
-  rescue StandardError => e
-    flash[:error] = "An error occurred: #{e.message}"
+  end
+
+  def logout
+    session[:user_id] = nil
     redirect_to :action => "login"
   end
 end

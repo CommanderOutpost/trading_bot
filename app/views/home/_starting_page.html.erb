@@ -1,0 +1,37 @@
+<div class="row home-row">
+  <div class="col-lg mb-3 mb-sm-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Start Trading</h5>
+        <p class="card-text">
+          Trade real-time or historical stocks with virtual money.
+        </p>
+        <a href="{{ url_for('home.trading') }}" class="btn btn-primary">Go</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg mb-3 mb-sm-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Predict Stock Movement</h5>
+        <p class="card-text">
+          Predict stock movement using generative AI.
+        </p>
+        <a href="{{ url_for('home.prediction_route')}}" class="btn btn-primary">Go</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg mb-3 mb-sm-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">View Stock Data</h5>
+        <p class="card-text">
+          View real-time and historical stock data.
+        </p>
+        <a href="{{ url_for('home.stock_graph')}}" class="btn btn-primary">Go</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+

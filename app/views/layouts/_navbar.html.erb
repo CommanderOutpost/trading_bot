@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="<%= url_for("index") %>">
+      <a class="navbar-brand" href="/"  %>
         <h1 class="h1">QUIDBOT</h1>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -11,8 +11,15 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item" ng-hide="signedIn()"><%= link_to "Register", auth_register_path, class: "nav-link" %></li>
+            
+            <% if @user %>
+              <li class="nav-item" ng-show="signedIn()"><%= link_to "Log Out", auth_logout_path, class: "nav-link" %></li>
+              
+              <% else %>
             <li class="nav-item" ng-hide="signedIn()"><%= link_to "Login", auth_login_path, class: "nav-link" %></li>
-            <li class="nav-item" ng-show="signedIn()"><%= link_to "Log Out", auth_login_path, class: "nav-link" %></li>
+              
+            <% end %>
+            
         </ul>
         <div class="d-flex">
           <button class="btn btn-outline-success"><i class="fa-solid fa-gear"></i></button>
