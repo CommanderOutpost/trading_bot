@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_19_100753) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_22_105747) do
+  create_table "settings", force: :cascade do |t|
+    t.string "endpoint"
+    t.string "key_id"
+    t.string "key_secret"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_settings_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password"
@@ -20,4 +30,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_19_100753) do
     t.string "string"
   end
 
+  add_foreign_key "settings", "users"
 end
