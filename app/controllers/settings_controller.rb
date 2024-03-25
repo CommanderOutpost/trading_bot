@@ -9,11 +9,24 @@ class SettingsController < ApplicationController
 
     api_endpoint = get_api_endpoint(account_type)
 
-    @settings = Setting.new(key_id: api_key, key_secret: api_secret, endpoint: api_endpoint, user_id: user_id)
-    if @settings.save!
+    # Check if the setting already exists
+    @settings = Setting.find_by(user_id: user_id)
+
+    if @settings.nil?
+      # If setting does not exist, create a new one
+      @settings = Setting.new(key_id: api_key, key_secret: api_secret, endpoint: api_endpoint, user_id: user_id)
+    else
+      # If setting exists, update it
+      @settings.key_id = api_key
+      @settings.key_secret = api_secret
+      @settings.endpoint = api_endpoint
+    end
+
+    if @settings.save
       redirect_to root_path
     else
       flash[:error] = "There was a problem saving your settings"
+      render :new # Assuming there's a new action where the form is displayed
     end
   end
 
@@ -26,30 +39,31 @@ class SettingsController < ApplicationController
     @settings = Setting.new
   end
 
-  def update
-    api_key = params[:api_key]
-    api_secret = params[:api_secret]
-    account_type = params[:account_type]
-    id = params[:id]
+  # def update
+  #   api_key = params[:api_key]
+  #   api_secret = params[:api_secret]
+  #   account_type = params[:account_type]
+  #   id = params[:id]
+  #   api_secret = "bodyy"
 
-    puts "API Key: #{api_key}" + " API Secret: #{api_secret}" + " Account Type: #{account_type}" + " ID: #{id}\n\n\n\n\n"
+  #   puts api_key + " " + api_secret + " " + account_type + " " + id
 
-    api_endpoint = get_api_endpoint(account_type)
+  #   api_endpoint = get_api_endpoint(account_type)
 
-    @settings = Setting.find_by(id: id)
-    @settings.key_id = api_key
-    @settings.key_secret = api_secret
-    @settings.endpoint = api_endpoint
+  #   @settings = Setting.find_by(id: id)
+  #   @settings.key_id = api_key
+  #   @settings.key_secret = api_secret
+  #   @settings.endpoint = api_endpoint
 
-    if @settings.save!
-      redirect_to root_path
-    else
-      flash[:error] = "There was a problem saving your settings"
-    end
-  end
+  #   if @settings.save!
+  #     redirect_to root_path
+  #   else
+  #     flash[:error] = "There was a problem saving your settings"
+  #   end
+  # end
 
   def show
-    redirect_to root_path
+    redirect_to settings_path
   end
 
   private

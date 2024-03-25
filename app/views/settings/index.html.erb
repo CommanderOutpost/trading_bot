@@ -1,17 +1,19 @@
+<%= content_for :header do %>
+  <div class="container">
+    <h1 class="h1 display-4">Settings</h1>
+  </div>
+<% end %>
 
 
 <%= content_for :content do %>
       <div class="container">
-        <h3>Settings</h3>
         <form 
-        
-        <% if @settings %>
-            method="put"
-            <% else %>
             method="post"
-        <% end %>
-        
-         action=<%= "settings/" + @settings.id.to_s %>>
+        <% if @settings %>
+            action=<%= "settings/" %>
+            <% else %>
+            action=<%= "settings/" %>
+        <% end %>>
             <div class="mb-3">
                 <label for="ai-account_type" class="form-label">Stock prediction model</label>
                 <select name="account_type" class="form-select" aria-label="Default select example" required>
