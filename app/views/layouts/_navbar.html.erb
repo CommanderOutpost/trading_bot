@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/"  %>
+      <a class="navbar-brand" href="/"        %>
         <h1 class="h1">QUIDBOT</h1>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -22,7 +22,9 @@
             
         </ul>
         <div class="d-flex">
-          <button class="btn btn-outline-success"><i class="fa-solid fa-gear"></i></button>
+          <%= button_to "/settings", method: :get, class: "btn btn-outline-success" do %>
+            <i class="fa-solid fa-gear"></i>
+          <% end %>
         </div>
       </div>
     </div>

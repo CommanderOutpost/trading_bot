@@ -32,6 +32,8 @@ class SettingsController < ApplicationController
     account_type = params[:account_type]
     id = params[:id]
 
+    puts "API Key: #{api_key}" + " API Secret: #{api_secret}" + " Account Type: #{account_type}" + " ID: #{id}\n\n\n\n\n"
+
     api_endpoint = get_api_endpoint(account_type)
 
     @settings = Setting.find_by(id: id)
@@ -44,6 +46,10 @@ class SettingsController < ApplicationController
     else
       flash[:error] = "There was a problem saving your settings"
     end
+  end
+
+  def show
+    redirect_to root_path
   end
 
   private
