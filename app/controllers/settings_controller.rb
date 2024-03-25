@@ -39,31 +39,8 @@ class SettingsController < ApplicationController
     @settings = Setting.new
   end
 
-  # def update
-  #   api_key = params[:api_key]
-  #   api_secret = params[:api_secret]
-  #   account_type = params[:account_type]
-  #   id = params[:id]
-  #   api_secret = "bodyy"
-
-  #   puts api_key + " " + api_secret + " " + account_type + " " + id
-
-  #   api_endpoint = get_api_endpoint(account_type)
-
-  #   @settings = Setting.find_by(id: id)
-  #   @settings.key_id = api_key
-  #   @settings.key_secret = api_secret
-  #   @settings.endpoint = api_endpoint
-
-  #   if @settings.save!
-  #     redirect_to root_path
-  #   else
-  #     flash[:error] = "There was a problem saving your settings"
-  #   end
-  # end
-
   def show
-    redirect_to settings_path
+    redirect_to root_path
   end
 
   private

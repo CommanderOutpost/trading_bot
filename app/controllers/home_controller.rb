@@ -4,6 +4,11 @@ class HomeController < ApplicationController
       @user = nil
     else
       @user = User.find(session[:user_id])
+      @settings = Setting.find_by(user_id: session[:user_id])
+
+      if @settings.nil?
+        flash[:error] = "Please set your API key and secret in settings"
+      end
     end
   end
 end
