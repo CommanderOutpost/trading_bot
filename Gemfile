@@ -13,6 +13,7 @@ gem "jbuilder"
 gem "redis", ">= 4.0.1"
 gem "bcrypt"
 gem "alpaca-trade-api"
+gem "yfinance"
 
 # gem "kredis"
 

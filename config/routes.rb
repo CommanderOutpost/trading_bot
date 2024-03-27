@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post "auth/login"
 
   post "trade/start"
+  post "trade/stop"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

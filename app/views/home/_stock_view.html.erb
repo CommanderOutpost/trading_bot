@@ -3,7 +3,7 @@
     <h2 class="h1 display-5">Pick a Stock to Trade</h2>
 </div>
 <div class="container">
-    <form id="stock-form" method="post" action="/trade">
+    <form id="stock-form" method="post" action="/trade/start">
         <div class="mb-3">
             <label for="stock" class="form-label"><strong>Stock Ticker:</strong></label>
             <input name="stock" type="text" class="form-control" id="stock" placeholder="AAPL" required>
@@ -25,4 +25,23 @@
     </form>
 
     <div id="stock-graph"></div>
+
+    <% if @trade %>
+      <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Current Trading Bot</h5>
+            <p class="card-text">
+                <strong>Symbol:</strong> <%= @trade.symbol %><br>
+                <strong>Status:</strong> <%= @trade.status.capitalize %><br>
+                <strong>Quantity:</strong> <%= @trade.quantity %><br>
+                <strong>Started At:</strong> <%= @trade.start_time.strftime("%B %d, %Y %H:%M") %>
+            </p>
+            <form action="/trade/stop" method="post">
+                <!-- Assuming Rails, you may need to include CSRF token here -->
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <button type="submit" class="btn btn-danger">Cancel Trade</button>
+            </form>
+        </div>
+    </div>
+    <% end %>
 </div>
