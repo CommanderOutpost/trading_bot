@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_22_105747) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_26_115012) do
   create_table "settings", force: :cascade do |t|
     t.string "endpoint"
     t.string "key_id"
@@ -19,6 +19,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_105747) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_settings_on_user_id"
+  end
+
+  create_table "trades", force: :cascade do |t|
+    t.integer "user_id"
+    t.datetime "start_time", null: false
+    t.datetime "end_time", null: false
+    t.decimal "initial_portfolio_value", null: false
+    t.decimal "final_portfolio_value"
+    t.string "status", null: false
+    t.string "symbol", null: false
+    t.integer "quantity", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

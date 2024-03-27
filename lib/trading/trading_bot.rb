@@ -38,13 +38,44 @@ class RealTimeTradingBot
     @long_window = 30
     @short_window = 10
     @position = nil
+    @quantity = 1
+    @running = false
   end
 
   def run
+    @running = true
     loop do
       check_for_signals
-      sleep(60) # Wait for 1 minute before checking again
+      sleep(60)
     end
+  end
+
+  def stop
+    @running = false
+  end
+
+  def get_attributes
+    return {
+             symbol: @symbol,
+             long_window: @long_window,
+             short_window: @short_window,
+             position: @position,
+             quantity: @quantity,
+             running: @running,
+           }
+  end
+
+  def get_portfolio
+    portfolio_info = {
+      cash: @client.account.cash,
+      equity: @client.account.equity,
+      portfolio_value: @client.account.portfolio_value,
+    }
+    return portfolio_info
+  end
+
+  def get_quantity
+    return @quantity
   end
 
   private
@@ -98,7 +129,7 @@ class RealTimeTradingBot
   def open_long_position
     order = @client.new_order(
       symbol: @symbol,
-      qty: 1,
+      qty: @quantity,
       side: "buy",
       type: "market",
       time_in_force: "gtc",
@@ -110,7 +141,7 @@ class RealTimeTradingBot
   def open_short_position
     order = @client.new_order(
       symbol: @symbol,
-      qty: 1,
+      qty: @quantity,
       side: "sell",
       type: "market",
       time_in_force: "gtc",
@@ -120,6 +151,6 @@ class RealTimeTradingBot
   end
 end
 
-# Usage example
-bot = RealTimeTradingBot.new("PKQS4UYIMUTPBVDY7BPC", "vDV0LSbYLPc6vSc9jWIXeAib9QYD7wgpNPgrVj4f", "https://paper-api.alpaca.markets", "NVDA")
-bot.run
+# # Usage example
+# bot = RealTimeTradingBot.new("PKQS4UYIMUTPBVDY7BPC", "vDV0LSbYLPc6vSc9jWIXeAib9QYD7wgpNPgrVj4f", "https://paper-api.alpaca.markets", "NVDA")
+# portfolio = bot.get_portfolio

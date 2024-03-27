@@ -5,6 +5,7 @@ class HomeController < ApplicationController
     else
       @user = User.find(session[:user_id])
       @settings = Setting.find_by(user_id: session[:user_id])
+      @trade = Trade.find_by(user_id: session[:user_id], status: "running")
 
       if @settings.nil?
         flash[:error] = "Please set your API key and secret in settings"
