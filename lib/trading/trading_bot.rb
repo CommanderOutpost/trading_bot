@@ -93,28 +93,25 @@ class RealTimeTradingBot
 
   def check_for_signals
     begin
-      # Execute the Python script to get close prices
-      python_script_path = "lib/data/real_time_data.py"  # Replace with the path to your Python script
-      python_command = "python #{python_script_path} #{@symbol} #{@long_window + 1}"
-      close_prices_output = `#{python_command}`
-
-      puts "Close prices: #{close_prices_output}"
-
-      # Parse the output to get close prices
-      close_prices = close_prices_output.split(",").map(&:to_f)
+      # Assume we have a method that gets the last N+1 close prices for the symbol
+      close_prices = get_last_n_close_prices(@symbol, @long_window + 1)
 
       # Calculate SMAs
       short_sma = sma(close_prices, @short_window)
       long_sma = sma(close_prices, @long_window)
 
+      last_price = close_prices.last
       last_short_sma = short_sma.last
       last_long_sma = long_sma.last
 
-      # Check SMAs and open positions accordingly
+      # Check if short SMA crossed above long SMA for a Golden Cross/buy signal
       if last_short_sma > last_long_sma && @position != "long"
-        open_long_position
+        close_short_position if @position == "short"  # If we have a short position, we need to close it first
+        open_long_position(last_price)
+        # Check if short SMA crossed below long SMA for a Death Cross/sell signal
       elsif last_short_sma < last_long_sma && @position != "short"
-        open_short_position
+        close_long_position if @position == "long"  # If we have a long position, we need to close it first
+        open_short_position(last_price)
       end
     rescue => e
       puts "Error in check_for_signals: #{e.message}"
@@ -122,35 +119,69 @@ class RealTimeTradingBot
     end
   end
 
+  def get_last_n_close_prices(symbol, days)
+    python_script_path = "lib/data/real_time_data.py"  # Path to your Python script
+    python_command = "python3 #{python_script_path} #{symbol} #{days}"
+    close_prices_output = `#{python_command}`
+
+    if close_prices_output && !close_prices_output.empty?
+      close_prices_output.split(",").map(&:to_f)
+    else
+      raise "Failed to fetch close prices."
+    end
+  rescue => e
+    puts "Error in get_last_n_close_prices: #{e.message}"
+    nil
+  end
+
   def sma(data, window_size)
     data.each_cons(window_size).map { |window| window.sum / window_size }
   end
 
-  def open_long_position
+  def open_long_position(price)
+    puts price
     order = @client.new_order(
       symbol: @symbol,
-      qty: @quantity,
+      notional: price.round(2),
       side: "buy",
       type: "market",
-      time_in_force: "gtc",
+      time_in_force: "day",
     )
+    puts order.inspect
     @position = "long"
     puts "Opened long position on #{@symbol} at #{order.filled_avg_price}"
   end
 
-  def open_short_position
+  def open_short_position(price)
     order = @client.new_order(
       symbol: @symbol,
-      qty: @quantity,
+      notional: price.round(2),
       side: "sell",
       type: "market",
-      time_in_force: "gtc",
+      time_in_force: "day",
     )
     @position = "short"
     puts "Opened short position on #{@symbol} at #{order.filled_avg_price}"
   end
+
+  def close_long_position
+    order = @client.close_position(
+      symbol: @symbol,
+    )
+    @position = nil
+    puts "Closed long position on #{@symbol} at #{order.filled_avg_price}"
+  end
+
+  def close_short_position
+    order = @client.close_position(
+      symbol: @symbol,
+    )
+    @position = nil
+    puts "Closed short postion on #{@symbol} at #{order.filled_avg_price}"
+  end
 end
 
-# # Usage example
-# bot = RealTimeTradingBot.new("PKQS4UYIMUTPBVDY7BPC", "vDV0LSbYLPc6vSc9jWIXeAib9QYD7wgpNPgrVj4f", "https://paper-api.alpaca.markets", "NVDA")
+# # # Usage example
+# bot = RealTimeTradingBot.new("PKQS4UYIMUTPBVDY7BPC", "vDV0LSbYLPc6vSc9jWIXeAib9QYD7wgpNPgrVj4f", "https://paper-api.alpaca.markets", "AAPL")
 # portfolio = bot.get_portfolio
+# bot.run

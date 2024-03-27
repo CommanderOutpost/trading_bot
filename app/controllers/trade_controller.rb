@@ -51,7 +51,7 @@ class TradeController < ApplicationController
     rescue StandardError => e
       # Handle errors gracefully
       logger.error "Error starting trading bot: #{e}"
-      flash[:error] = "An error occurred while starting the trading bot"
+      flash[:error] = "An error occurred while starting the trading bot please ensure your settings are correct"
       redirect_to root_path
     end
   end
