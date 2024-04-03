@@ -40,6 +40,7 @@ class RealTimeTradingBot
     @position = nil
     @quantity = 1
     @running = false
+    @history = []
   end
 
   def run
@@ -139,7 +140,6 @@ class RealTimeTradingBot
   end
 
   def open_long_position(price)
-    puts price
     order = @client.new_order(
       symbol: @symbol,
       notional: price.round(2),
@@ -147,9 +147,9 @@ class RealTimeTradingBot
       type: "market",
       time_in_force: "day",
     )
-    puts order.inspect
     @position = "long"
     puts "Opened long position on #{@symbol} at #{order.filled_avg_price}"
+    @history << { type: "long", price: order.filled_avg_price, time: Time.now }
   end
 
   def open_short_position(price)
@@ -162,6 +162,7 @@ class RealTimeTradingBot
     )
     @position = "short"
     puts "Opened short position on #{@symbol} at #{order.filled_avg_price}"
+    @history << { type: "short", price: order.filled_avg_price, time: Time.now }
   end
 
   def close_long_position

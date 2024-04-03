@@ -11,7 +11,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"
     defer></script>
+  <%= stylesheet_link_tag "application" %>
   <script src="https://kit.fontawesome.com/8281a2caea.js" crossorigin="anonymous"></script>
+  <!-- <%= javascript_include_tag "application" %> -->
   
   <%= render "layouts/navbar" %>
 </head>
@@ -24,6 +26,8 @@
     <% end %>
     <%= yield(:content) %>
   </section>
+    <%= yield(:javascript) %>
+
 </body>
 
 </html>

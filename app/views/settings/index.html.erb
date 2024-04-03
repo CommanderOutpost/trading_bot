@@ -4,57 +4,13 @@
   </div>
 <% end %>
 
+<%= content_for :javascript do %>
+  <%= javascript_include_tag "settings" %>
+<% end %>
+
 
 <%= content_for :content do %>
-      <div class="container">
-        <form 
-            method="post"
-        <% if @settings %>
-            action=<%= "settings/" %>
-            <% else %>
-            action=<%= "settings/" %>
-        <% end %>>
-            <div class="mb-3">
-                <label for="ai-account_type" class="form-label">Stock prediction model</label>
-                <select name="account_type" class="form-select" aria-label="Default select example" required>
-                    <option value="live" 
-                        <% if @settings %> 
-                            <%= "selected" if @settings.endpoint == "https://api.alpaca.markets" %>
-                        
-                        <% end %>  
-                    >Live</option>
-
-                    <option value="paper"
-                        <% if @settings %> 
-                            <%= "selected" if @settings.endpoint == "https://paper-api.alpaca.markets" %>
-                        <% end %>
-                    >Paper</option>
-
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="api_key" class="form-label">API key</label>
-                <input name="api_key" type="text" class="form-control" id="api" <% if true %>
-                    <% if @settings %> 
-                        value=<%= @settings.key_id %>
-                    <% else %> 
-                        value="" 
-                    <% end %> placeholder="Enter your API key" required>
-            </div>
-            <div class="mb-3">
-                <label for="api_secret" class="form-label">API secret</label>
-                <input name="api_secret" type="text" class="form-control" id="api" 
-                <% if @settings %>
-                    value=<%= @settings.key_secret %>
-                <% else %> 
-                    value=""
-                <% end %>
-                 placeholder="Enter your API secret" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="/" class="btn btn-secondary float-end">Go Back</a>
-        </form>
+    <div class="container">
+        <%= render 'settings/form' %>
     </div>
 <% end %>    
-
-<% end %>

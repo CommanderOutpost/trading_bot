@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_26_115012) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_03_100739) do
   create_table "settings", force: :cascade do |t|
     t.string "endpoint"
     t.string "key_id"
@@ -18,6 +18,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_26_115012) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "broker"
     t.index ["user_id"], name: "index_settings_on_user_id"
   end
 

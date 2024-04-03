@@ -31,7 +31,7 @@
         <div class="card-body">
             <h5 class="card-title">Current Trading Bot</h5>
             <p class="card-text">
-                <strong>Symbol:</strong> <%= @trade.symbol %><br>
+                <strong>Symbol:</strong> <%= @trade.symbol.upcase %><br>
                 <strong>Status:</strong> <%= @trade.status.capitalize %><br>
                 <strong>Quantity:</strong> <%= @trade.quantity %><br>
                 <strong>Started At:</strong> <%= @trade.start_time.strftime("%B %d, %Y %H:%M") %>

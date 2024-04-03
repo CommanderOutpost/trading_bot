@@ -6,6 +6,7 @@ class SettingsController < ApplicationController
     api_secret = params[:api_secret]
     account_type = params[:account_type]
     user_id = session[:user_id]
+    broker = params[:broker]
 
     api_endpoint = get_api_endpoint(account_type)
 
@@ -14,12 +15,13 @@ class SettingsController < ApplicationController
 
     if @settings.nil?
       # If setting does not exist, create a new one
-      @settings = Setting.new(key_id: api_key, key_secret: api_secret, endpoint: api_endpoint, user_id: user_id)
+      @settings = Setting.new(key_id: api_key, key_secret: api_secret, endpoint: api_endpoint, user_id: user_id, broker: broker)
     else
       # If setting exists, update it
       @settings.key_id = api_key
       @settings.key_secret = api_secret
       @settings.endpoint = api_endpoint
+      @settings.broker = broker
     end
 
     if @settings.save
@@ -32,7 +34,7 @@ class SettingsController < ApplicationController
 
   def index
     @settings = Setting.find_by(user_id: session[:user_id])
-    puts @settings.inspect
+    @user = User.find(session[:user_id])
   end
 
   def new

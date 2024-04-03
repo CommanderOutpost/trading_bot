@@ -19,9 +19,20 @@ class TradeController < ApplicationController
       api_key = @settings.key_id
       api_secret = @settings.key_secret
       api_endpoint = @settings.endpoint
-      symbol = params[:stock]
-      @@bot_instance = RealTimeTradingBot.new(api_key, api_secret, api_endpoint, symbol)
-      @bot = true
+      symbol = params[:stock].upcase
+
+      if @settings.broker == "Alpaca"
+        @@bot_instance = RealTimeTradingBot.new(api_key, api_secret, api_endpoint, symbol)
+        @bot = true
+      elsif @settings.broker == "Binance"
+        flash[:error] = "Binance not supported...yet"
+        redirect_to root_path
+        return
+      else
+        flash[:error] = "Broker not supported"
+        redirect_to root_path
+        return
+      end
 
       # Check if trade record already exists for the user and status is running
       existing_trade = Trade.find_by(user_id: session[:user_id], status: "running")
@@ -47,6 +58,7 @@ class TradeController < ApplicationController
       Thread.new do
         @@bot_instance.run
       end
+
       redirect_to root_path
     rescue StandardError => e
       # Handle errors gracefully
