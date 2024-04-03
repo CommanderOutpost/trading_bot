@@ -47,7 +47,7 @@ class RealTimeTradingBot
     @running = true
     loop do
       check_for_signals
-      sleep(60)
+      sleep(2)
     end
   end
 
@@ -121,9 +121,9 @@ class RealTimeTradingBot
   end
 
   def get_last_n_close_prices(symbol, days)
-    # print current directory and files in directory
-    puts "Current directory:"
-    puts Dir.pwd
+    # print files in lib/data directory
+    puts Dir.entries("lib/data")
+
     python_script_path = "lib/data/real_time_data.py"
     python_command = "python3 #{python_script_path} #{symbol} #{days}"
     close_prices_output = `#{python_command}`
