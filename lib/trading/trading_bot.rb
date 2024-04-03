@@ -121,7 +121,10 @@ class RealTimeTradingBot
   end
 
   def get_last_n_close_prices(symbol, days)
-    python_script_path = "lib/data/real_time_data.py"  # Path to your Python script
+    # print current directory and files in directory
+    puts "Current directory:"
+    puts Dir.pwd
+    python_script_path = "lib/data/real_time_data.py"
     python_command = "python3 #{python_script_path} #{symbol} #{days}"
     close_prices_output = `#{python_command}`
 
