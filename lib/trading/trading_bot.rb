@@ -47,7 +47,7 @@ class RealTimeTradingBot
     @running = true
     loop do
       check_for_signals
-      sleep(2)
+      sleep(60)
     end
   end
 
