@@ -1,15 +1,14 @@
 class HomeController < ApplicationController
   def index
-    if session[:user_id] == nil
-      @user = nil
-    else
-      @user = User.find(session[:user_id])
-      @settings = Setting.find_by(user_id: session[:user_id])
-      @trade = Trade.find_by(user_id: session[:user_id], status: "running")
+    # Guard clause for when user is not logged in
+    return @user = nil unless session[:user_id]
 
-      if @settings.nil?
-        flash[:error] = "Please set your API key and secret in settings"
-      end
-    end
+    # If session[:user_id] exists, find the user, settings, and running trade
+    @user = User.find_by(id: session[:user_id])
+    @settings = Setting.find_by(user_id: session[:user_id])
+    @trade = Trade.find_by(user_id: session[:user_id], status: "running")
+
+    # Set flash error if settings are not present
+    flash[:error] = "Please set your API key and secret in settings" if @settings.nil?
   end
 end
