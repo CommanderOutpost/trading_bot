@@ -5,6 +5,10 @@ class TradeController < ApplicationController
 
   @@bot_instance = nil
 
+  def self.bot_instance
+    @@bot_instance
+  end
+
   def start
     return redirect_to_error unless settings_present?
     return redirect_to_error("Broker not supported") unless supported_broker?

@@ -14,6 +14,8 @@ gem "redis", ">= 4.0.1"
 gem "bcrypt"
 gem "alpaca-trade-api"
 gem "yfinance"
+gem "binance"
+gem "eventmachine"
 
 # gem "kredis"
 
