@@ -16,7 +16,7 @@ FROM base as build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libvips pkg-config python3
+    apt-get install --no-install-recommends -y build-essential git libvips pkg-config python3 python3-pip python3-dev
 
 RUN python3 -m pip install --upgrade pip && \
     pip install yfinance
