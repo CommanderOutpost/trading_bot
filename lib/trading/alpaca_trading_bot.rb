@@ -33,8 +33,9 @@ require "alpaca/trade/api"
 
 class RealTimeAlpacaTradingBot
   attr_reader :symbol, :long_window, :short_window, :position, :quantity, :running
+  attr_accessor :on_stop
 
-  def initialize(api_key, api_secret, endpoint, symbol)
+  def initialize(api_key, api_secret, endpoint, symbol, on_stop = nil)
     @client = initialize_alpaca_client(endpoint, api_key, api_secret)
     @symbol = symbol
     @long_window = 30
@@ -43,14 +44,24 @@ class RealTimeAlpacaTradingBot
     @quantity = 1
     @running = false
     @history = []
+    @on_stop = on_stop
   end
 
   def run
     @running = true
     loop do
-      check_for_signals
+      signal = check_for_signals
+      puts "Received signal: #{signal.inspect}"
+
+      if signal.nil?
+        puts "Error in check_for_signals. Exiting..."
+        break
+      end
+
       sleep(60)
     end
+    puts "Exited."
+    @on_stop.call if @on_stop
   end
 
   def stop
@@ -89,6 +100,7 @@ class RealTimeAlpacaTradingBot
 
   def check_for_signals
     close_prices = fetch_close_prices
+    check_for_error_in_python_output(close_prices)
     return unless close_prices
 
     short_sma, long_sma = calculate_smas(close_prices)
@@ -97,12 +109,15 @@ class RealTimeAlpacaTradingBot
     process_trading_signals(last_price, short_sma.last, long_sma.last)
   rescue => e
     log_error("check_for_signals", e)
+    return nil
   end
 
   def fetch_close_prices
-    python_script_path = "lib/data/real_time_data.py"
+    python_script_path = "lib/real_time_data.py"
     python_command = "python3 #{python_script_path} #{symbol} #{long_window + 1}"
     output = `#{python_command}`
+    return unless output
+
     output&.split(",")&.map(&:to_f) || raise("Failed to fetch close prices.")
   rescue => e
     log_error("fetch_close_prices", e)
@@ -137,6 +152,10 @@ class RealTimeAlpacaTradingBot
     order = @client.close_position(symbol: symbol)
     @position = nil
     log_position("closed", order.filled_avg_price)
+  end
+
+  def check_for_error_in_python_output(output)
+    raise output if output.split(" ").first == "Error"
   end
 
   def log_error(method_name, error)
