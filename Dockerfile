@@ -18,6 +18,9 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libvips pkg-config python3
 
+RUN python3 -m pip install --upgrade pip && \
+    pip install yfinance
+
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install --with development
