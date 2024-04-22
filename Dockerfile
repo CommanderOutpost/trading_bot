@@ -33,4 +33,4 @@ ENV RAILS_ENV=development
 EXPOSE 3000
 
 # Run the Rails server as default command
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
