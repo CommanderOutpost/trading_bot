@@ -6,6 +6,8 @@
 # Ignore bundler config.
 /.bundle
 
+/lib/trading/close_prices.txt
+
 # Ignore all environment files (except templates).
 /.env*
 !/.env*.erb

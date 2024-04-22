@@ -16,6 +16,7 @@ gem "alpaca-trade-api"
 gem "yfinance"
 gem "binance"
 gem "eventmachine"
+gem "tzinfo-data"
 
 # gem "kredis"
 
