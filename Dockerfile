@@ -29,6 +29,9 @@ COPY . .
 # Set an environment variable to execute Rails in development mode
 ENV RAILS_ENV=development
 
+# Migrate db
+RUN bundle exec bin/rails db:migrate
+
 # Expose port 3000 for the Rails server
 EXPOSE 3000
 
