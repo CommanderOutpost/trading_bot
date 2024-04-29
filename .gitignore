@@ -30,6 +30,7 @@
 !/tmp/storage/.keep
 
 /public/assets
+/lib/trading/close_prices.txt
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
