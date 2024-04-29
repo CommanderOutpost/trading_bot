@@ -1,40 +1,11 @@
 # lib/trading/real_time_trading_bot.rb
 require "alpaca/trade/api"
 
-# Alpaca::Trade::Api.configure do |config|
-#   config.endpoint = "https://paper-api.alpaca.markets"
-#   config.key_id = "PKQS4UYIMUTPBVDY7BPC"
-#   config.key_secret = "vDV0LSbYLPc6vSc9jWIXeAib9QYD7wgpNPgrVj4f"
-# end
-
-# puts client.new_order(symbol: "AAPL", side: "buy", type: "market", time_in_force: "gtc", qty: 1)
-# puts client.account
-# puts client.orders
-# puts client.new_order(symbol: "AAPL", side: "buy", type: "market", time_in_force: "gtc", qty: 1)
-
-# def initialize_alpaca_client(type = None, key_id, key_secret)
-#   if type == "paper"
-#     api_endpoint = "https://paper-api.alpaca.markets"
-#   elsif type == "live"
-#     api_endpoint = "https://api.alpaca.markets"
-#   else
-#     api_endpoint = "https://paper-api.alpaca.markets"
-#   end
-
-#   Alpaca::Trade::Api.configure do |config|
-#     config.endpoint = api_endpoint
-#     config.key_id = key_id
-#     config.key_secret = key_secret
-#   end
-
-#   client = Alpaca::Trade::Api::Client.new
-#   return client
-# end
-
 class RealTimeAlpacaTradingBot
   attr_reader :symbol, :long_window, :short_window, :position, :quantity, :running
+  attr_accessor :on_stop
 
-  def initialize(api_key, api_secret, endpoint, symbol)
+  def initialize(api_key, api_secret, endpoint, symbol, on_stop = nil)
     @client = initialize_alpaca_client(endpoint, api_key, api_secret)
     @symbol = symbol
     @long_window = 30
@@ -43,14 +14,24 @@ class RealTimeAlpacaTradingBot
     @quantity = 1
     @running = false
     @history = []
+    @on_stop = on_stop
   end
 
   def run
     @running = true
     loop do
-      check_for_signals
+      signal = check_for_signals
+      puts "Received signal: #{signal.inspect}"
+
+      if signal.nil?
+        puts "Error in check_for_signals. Exiting..."
+        break
+      end
+
       sleep(60)
     end
+    puts "Exited."
+    @on_stop.call if @on_stop
   end
 
   def stop
@@ -90,6 +71,7 @@ class RealTimeAlpacaTradingBot
   def check_for_signals
     close_prices = fetch_close_prices
     return unless close_prices
+    check_for_error_in_python_output(close_prices)
 
     short_sma, long_sma = calculate_smas(close_prices)
     last_price = close_prices.last
@@ -97,13 +79,18 @@ class RealTimeAlpacaTradingBot
     process_trading_signals(last_price, short_sma.last, long_sma.last)
   rescue => e
     log_error("check_for_signals", e)
+    return nil
   end
 
   def fetch_close_prices
-    python_script_path = "lib/data/real_time_data.py"
-    python_command = "python3 #{python_script_path} #{symbol} #{long_window + 1}"
+    base_path = "lib/trading"
+    python_script_path = "#{base_path}/real_time_data.py"
+    python_command = "/usr/bin/python3 #{python_script_path} #{symbol} #{long_window + 1}"
     output = `#{python_command}`
-    output&.split(",")&.map(&:to_f) || raise("Failed to fetch close prices.")
+    close_prices = File.read("#{base_path}/close_prices.txt")
+    return unless close_prices
+
+    close_prices&.split(",")&.map(&:to_f) || raise("Failed to fetch close prices.")
   rescue => e
     log_error("fetch_close_prices", e)
     nil
@@ -120,6 +107,9 @@ class RealTimeAlpacaTradingBot
     elsif last_short_sma < last_long_sma && position != "short"
       close_position if position == "long"
       open_position("short", last_price)
+    else
+      puts "No trading signal received."
+      return "none"
     end
   end
 
@@ -137,6 +127,10 @@ class RealTimeAlpacaTradingBot
     order = @client.close_position(symbol: symbol)
     @position = nil
     log_position("closed", order.filled_avg_price)
+  end
+
+  def check_for_error_in_python_output(output)
+    raise output if output.split(" ").first == "Error"
   end
 
   def log_error(method_name, error)
