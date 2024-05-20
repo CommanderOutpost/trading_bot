@@ -15,5 +15,9 @@
  */
 
 .dropdown-item {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+.error-border {
+  border: 2px solid red;
 }

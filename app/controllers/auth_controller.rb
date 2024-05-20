@@ -35,10 +35,7 @@ class AuthController < ApplicationController
   def change_password
     return unless request.post?
     if @user.authenticate(params[:current_password])
-      if params[:new_password] == params[:current_password]
-        flash.now[:error] = "New password must be different from current password"
-        render :change_password
-      elsif params[:new_password] == params[:confirm_password]
+      if params[:new_password] == params[:confirm_password]
         if @user.update(password: params[:new_password])
           redirect_to root_path, notice: "Password successfully updated"
         else
