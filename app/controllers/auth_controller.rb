@@ -30,6 +30,28 @@ class AuthController < ApplicationController
     redirect_to auth_login_path
   end
 
+  before_action :set_user_by_session, only: [:change_password]
+
+  def change_password
+    return unless request.post?
+    if @user.authenticate(params[:current_password])
+      if params[:new_password] == params[:current_password]
+        flash.now[:error] = "New password must be different from current password"
+        render :change_password
+      else
+        if @user.update(password: params[:new_password])
+          redirect_to root_path, notice: "Password successfully updated"
+        else
+          flash.now[:error] = "Error updating password"
+          render :change_password
+        end
+      end
+    else
+      flash.now[:error] = "Current password is incorrect"
+      render :change_password
+    end
+  end
+
   private
 
   # Use strong parameters to ensure we're only permitting the username and password for mass assignment
@@ -40,5 +62,9 @@ class AuthController < ApplicationController
   # Sets the user if one exists with the given username and password
   def set_user
     @user = User.find_by(username: params[:username])&.authenticate(params[:password])
+  end
+
+  def set_user_by_session
+    @user = User.find(session[:user_id])
   end
 end

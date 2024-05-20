@@ -13,9 +13,11 @@
     defer></script>
   <%= stylesheet_link_tag "application" %>
   <script src="https://kit.fontawesome.com/8281a2caea.js" crossorigin="anonymous"></script>
-  <!-- <%= javascript_include_tag "application" %> -->
+  <%= stylesheet_link_tag "application", media: "all", 'data-turbo-track': "reload" %>
+
   
   <%= render "layouts/navbar" %>
+    <%= javascript_importmap_tags %>
 </head>
 
 <body>

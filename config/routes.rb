@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
   get "auth/logout"
 
+  get "auth/change_password", to: "auth#change_password"
+  post "auth/change_password", to: "auth#change_password"
+
   get "auth/register"
   post "auth/register"
 
