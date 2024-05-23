@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
-  # Assuming @@bot_instance is accessible here or you have a way to access the bot instance
-  bot_instance = TradeController.bot_instance
+  bot_instance = Trade::TradingBotManageable.bot_instance
 
   def self.stop_all_trading_activities
     # Stop the trading bot
