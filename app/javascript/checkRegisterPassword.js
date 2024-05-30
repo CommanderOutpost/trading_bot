@@ -8,7 +8,7 @@ form.addEventListener('submit', function (event) {
     var password = document.getElementById('password');
 
     if (!password) {
-        var password = document.getElementById('current_password');
+        var password = document.getElementById('new_password');
     }
 
     const passwordValue = password.value;
