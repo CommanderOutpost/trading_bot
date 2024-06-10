@@ -6,7 +6,7 @@
     <form id="stock-form" method="post" action="/trade/start">
         <div class="mb-3">
             <label for="stock" class="form-label"><strong>Stock Ticker:</strong></label>
-            <input name="stock" type="text" class="form-control" id="stock" placeholder="AAPL" required>
+            <input name="stock" type="text" class="form-control" id="stock" placeholder="AAPL" required data-stocks="<%= @stocks.to_json %>">
         </div>
         <div class="mb-3">
             <label for="strategy" class="form-label"><strong>Strategy:</strong></label>
@@ -44,4 +44,6 @@
         </div>
     </div>
     <% end %>
+
+    <%= javascript_include_tag "autocomplete.js" %>
 </div>

@@ -10,5 +10,8 @@ class HomeController < ApplicationController
 
     # Set flash error if settings are not present
     flash[:error] = "Please set your API key and secret in settings" if @settings.nil?
+
+    # Predefined stocks
+    @stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA", "FB", "BABA", "NFLX", "ORCL", "IBM"]
   end
 end
