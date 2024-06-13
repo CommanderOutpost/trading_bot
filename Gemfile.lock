@@ -102,6 +102,7 @@ GEM
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
+    csv (3.3.0)
     date (3.3.4)
     debug (1.9.1)
       irb (~> 1.10)
@@ -119,8 +120,13 @@ GEM
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.5.1)
     ffi (1.16.3)
+    foreman (0.88.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    httparty (0.22.0)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -147,6 +153,7 @@ GEM
     mini_mime (1.1.5)
     minitest (5.22.3)
     msgpack (1.7.2)
+    multi_xml (0.6.0)
     multipart-post (2.4.0)
     mutex_m (0.2.0)
     net-imap (0.4.10)
@@ -272,6 +279,8 @@ DEPENDENCIES
   capybara
   debug
   eventmachine
+  foreman
+  httparty
   importmap-rails
   jbuilder
   puma (>= 5.0)
