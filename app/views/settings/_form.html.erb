@@ -43,29 +43,37 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="api_key" class="form-label">API key</label>
-                    <input name="api_key" type="text" class="form-control" id="api" <% if true %>
+                    <label for="api_key" class="form-label">API Key</label>
+                    <div class="input-group">
+                        <input type="password" name="api_key" class="form-control password" id="api_key" 
                         <% if @settings %>
                             value=<%= @settings.key_id %>
                         <% else %>
                             value=""
                         <% end %> placeholder="Enter your API key" required>
+                        <button type="button" class="btn btn-outline-secondary input-group-text togglePassword">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="api_secret" class="form-label">API secret</label>
-                    <input name="api_secret" type="text" class="form-control" id="api" 
-                    <% if @settings %>
-                        value=<%= @settings.key_secret %>
-                    <% else %> 
-                        value=""
-                    <% end %>
-                    placeholder="Enter your API secret" required>
+                    <label for="api_secret" class="form-label">API Secret</label>
+                    <div class="input-group">
+                        <input type="password" name="api_secret" class="form-control password" id="api_secret" 
+                        <% if @settings %>
+                            value=<%= @settings.key_secret %>
+                        <% else %> 
+                            value=""
+                        <% end %> placeholder="Enter your API secret" required>
+                        <button type="button" class="btn btn-outline-secondary input-group-text togglePassword">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </button>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+
+            <button type="submit" class="btn btn-primary">Save</button>
                 <a href="/" class="btn btn-secondary float-end">Go Back</a>
             </form>
         </div>
 
-
-<% end %>
-
+<%= javascript_include_tag "viewPassword.js" %>
