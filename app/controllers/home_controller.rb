@@ -30,5 +30,8 @@ class HomeController < ApplicationController
       @stocks = []
       flash[:error] = "Failed to retrieve stock data: #{response.message}"
     end
+
+    @bot_trades = BotTrade.all.order(transaction_time: :desc)
+    puts @bot_trades
   end
 end
