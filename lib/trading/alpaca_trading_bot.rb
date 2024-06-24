@@ -5,7 +5,7 @@ class RealTimeAlpacaTradingBot
   attr_reader :symbol, :long_window, :short_window, :position, :quantity, :running
   attr_accessor :on_stop
 
-  def initialize(api_key, api_secret, endpoint, symbol, on_stop = nil)
+  def initialize(api_key, api_secret, endpoint, symbol, session, on_stop = nil)
     @client = initialize_alpaca_client(endpoint, api_key, api_secret)
     @symbol = symbol
     @long_window = 30
@@ -14,6 +14,7 @@ class RealTimeAlpacaTradingBot
     @quantity = 1
     @running = false
     @history = []
+    @session = session
     @on_stop = on_stop
   end
 
@@ -121,12 +122,28 @@ class RealTimeAlpacaTradingBot
     order = @client.new_order(symbol: symbol, notional: price.round(2), side: type == "long" ? "buy" : "sell", type: "market", time_in_force: "day")
     @position = type
     log_position(type, order.filled_avg_price)
+    record_trade(order, type, "opened") # Record the trade
   end
 
   def close_position
     order = @client.close_position(symbol: symbol)
     @position = nil
     log_position("closed", order.filled_avg_price)
+    record_trade(order, "closed", "closed") # Record the trade
+  end
+
+  private
+
+  def record_trade(order, type, status)
+    BotTrade.create!(
+      user_id: @session[:user_id], # Adjust based on your session or user handling
+      symbol: symbol,
+      trade_type: type,
+      price: order.filled_avg_price,
+      quantity: order.qty,
+      status: status,
+      transaction_time: Time.now,
+    )
   end
 
   def check_for_error_in_python_output(output)

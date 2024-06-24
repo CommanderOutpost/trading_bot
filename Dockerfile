@@ -36,4 +36,4 @@ RUN bundle exec bin/rails db:migrate
 EXPOSE 3000
 
 # Run the Rails server as default command
-CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+CMD ["foreman", "start"]

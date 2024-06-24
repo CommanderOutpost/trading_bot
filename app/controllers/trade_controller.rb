@@ -69,7 +69,7 @@ class TradeController < ApplicationController
     api_endpoint = @settings.endpoint
     callback = -> { stop_trading_bot }
 
-    @@bot_instance = RealTimeAlpacaTradingBot.new(api_key, api_secret, api_endpoint, symbol, callback) if @settings.broker == "Alpaca"
+    @@bot_instance = RealTimeAlpacaTradingBot.new(api_key, api_secret, api_endpoint, symbol, session, callback) if @settings.broker == "Alpaca"
   end
 
   def create_trade_record
