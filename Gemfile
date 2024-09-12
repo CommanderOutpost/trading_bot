@@ -17,6 +17,8 @@ gem "yfinance"
 gem "binance"
 gem "eventmachine"
 gem "tzinfo-data"
+gem "httparty"
+gem "foreman"
 
 # gem "kredis"
 
