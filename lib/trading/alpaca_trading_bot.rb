@@ -1,7 +1,7 @@
 # lib/trading/real_time_trading_bot.rb
 require "alpaca/trade/api"
 
-class RealTimeAlpacaTradingBot
+class AlpacaTradingBot
   attr_reader :symbol, :long_window, :short_window, :position, :quantity, :running
   attr_accessor :on_stop
 

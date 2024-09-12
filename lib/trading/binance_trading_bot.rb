@@ -1,6 +1,6 @@
 require "binance"
 
-class RealTimeBinanceTradingBot
+class BinanceTradingBot
   attr_reader :symbol, :long_window, :short_window, :position, :quantity, :running
 
   def initialize(api_key, api_secret, symbol)
@@ -129,6 +129,6 @@ class RealTimeBinanceTradingBot
   # end
 end
 
-bot = RealTimeBinanceTradingBot.new("JTmP8lcNgNq7hHHpaxesoZfoAJEclXi2OMX5AwjgWoV6wkSo58c0UKZYoAaoZXzm", "j1YwssB5y9HPfAo0VEeEDWPpcRz2BqNSi5htjqjtKj6jKQxyiYLkKfbfA5eHn33N", "BTCUSD")
-bot.get_attributes
-bot.run
+# bot = RealTimeBinanceTradingBot.new("JTmP8lcNgNq7hHHpaxesoZfoAJEclXi2OMX5AwjgWoV6wkSo58c0UKZYoAaoZXzm", "j1YwssB5y9HPfAo0VEeEDWPpcRz2BqNSi5htjqjtKj6jKQxyiYLkKfbfA5eHn33N", "BTCUSD")
+# bot.get_attributes
+# bot.run
