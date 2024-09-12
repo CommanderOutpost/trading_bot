@@ -1,6 +1,6 @@
 require "binance"
 
-class BinanceTradingBot
+class Trading::BinanceTradingBot
   attr_reader :symbol, :long_window, :short_window, :position, :quantity, :running
 
   def initialize(api_key, api_secret, symbol)
