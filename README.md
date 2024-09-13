@@ -1,7 +1,7 @@
 # Trading Bot
 
 This is a Ruby on Rails application designed to help users automate their trading activities. The bot interacts with the Alpaca trading platform to buy and sell stocks based on user-defined settings.
-Try it [here](https://trading-bot-rkbt.onrender.com).
+Try it [here](https://quidbot.onrender.com/).
 
 ## Features
 
