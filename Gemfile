@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.0.2"
+ruby "3.2.3"
 
 gem "rails", "~> 7.1.3", ">= 7.1.3.2"
 gem "sprockets-rails"
@@ -17,6 +17,8 @@ gem "yfinance"
 gem "binance"
 gem "eventmachine"
 gem "tzinfo-data"
+gem "httparty"
+gem "foreman"
 
 # gem "kredis"
 
