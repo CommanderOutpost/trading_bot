@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  symbol: MyString
+  type: 
+  price: 9.99
+  quantity: 1
+  status: MyString
+  transaction_time: 2024-06-19 09:11:00
+
+two:
+  user_id: 1
+  symbol: MyString
+  type: 
+  price: 9.99
+  quantity: 1
+  status: MyString
+  transaction_time: 2024-06-19 09:11:00

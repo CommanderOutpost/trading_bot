@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_03_100739) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_19_082842) do
+  create_table "bot_trades", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "symbol"
+    t.string "trade_type"
+    t.decimal "price"
+    t.integer "quantity"
+    t.string "status"
+    t.datetime "transaction_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "settings", force: :cascade do |t|
     t.string "endpoint"
     t.string "key_id"
@@ -42,6 +54,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_03_100739) do
     t.datetime "updated_at", null: false
     t.string "password_digest"
     t.string "string"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.string "email"
   end
 
   add_foreign_key "settings", "users"

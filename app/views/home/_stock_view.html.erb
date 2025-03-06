@@ -6,7 +6,7 @@
     <form id="stock-form" method="post" action="/trade/start">
         <div class="mb-3">
             <label for="stock" class="form-label"><strong>Stock Ticker:</strong></label>
-            <input name="stock" type="text" class="form-control" id="stock" placeholder="AAPL" required>
+            <input name="stock" type="text" class="form-control" id="stock" placeholder="AAPL" required data-stocks="<%= @stocks.to_json %>">
         </div>
         <div class="mb-3">
             <label for="strategy" class="form-label"><strong>Strategy:</strong></label>
@@ -43,5 +43,35 @@
             </form>
         </div>
     </div>
+
     <% end %>
+    <div class="container mt-5">
+    <h3 class="display-5 h3">Trade History</h3>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Symbol</th>
+                <th scope="col">Type</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Status</th>
+                <th scope="col">Transaction Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @bot_trades.each do |trade| %>
+            <tr>
+                <td><%= trade.symbol %></td>
+                <td><%= trade.trade_type.capitalize %></td>
+                <td><%= number_to_currency(trade.price) %></td>
+                <td><%= trade.quantity %></td>
+                <td><%= trade.status.capitalize %></td>
+                <td><%= trade.transaction_time.strftime("%B %d, %Y %H:%M") %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
+
+    <%= javascript_include_tag "autocomplete.js" %>
 </div>
